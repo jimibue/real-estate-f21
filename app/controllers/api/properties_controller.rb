@@ -1,6 +1,6 @@
 class Api::PropertiesController < ApplicationController
 
   def index
-    render json: 'working'
+    render json: Property.available
   end
 end
