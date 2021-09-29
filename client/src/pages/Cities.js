@@ -1,18 +1,24 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Dropdown } from "semantic-ui-react";
+import { Card, Dropdown } from "semantic-ui-react";
+import PropertyCard from "../components/PropertyCard";
 
 const Cities = () => {
   const [cities, setCities] = useState([]);
+  const [properties, setProperties] = useState(null);
 
   useEffect(() => {
     getCities();
   }, []);
 
+  const renderProperties = () => {
+    return properties.map((p) => <PropertyCard {...p} />);
+  };
+
   const handleChange = async (e, { value }) => {
     try {
       let res = await axios.get(`/api/cities/${value}`);
-      console.log(res);
+      setProperties(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -40,6 +46,7 @@ const Cities = () => {
         selection
         options={cities}
       />
+      {properties && <Card.Group>{renderProperties()}</Card.Group>}
     </div>
   );
 };
