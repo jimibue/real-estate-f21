@@ -35,6 +35,6 @@ class Property < ApplicationRecord
    select(' p.price, p.beds, p.baths, p.sq_ft')
    .from('properties AS p')
    .joins('INNER JOIN addresses AS a ON a.property_id = p.id')
-   .where("LOWER(a.city) = ? AND p.sold <> TRUE", city.lower)
+   .where("LOWER(a.city) = ? AND p.sold <> TRUE", city.downcase)
   end
 end
