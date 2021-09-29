@@ -9,8 +9,13 @@ const Cities = () => {
     getCities();
   }, []);
 
-  const handleChange = (e, { value }) => {
-    console.log(value);
+  const handleChange = async (e, { value }) => {
+    try {
+      let res = await axios.get(`/api/cities/${value}`);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
   const getCities = async () => {
     try {
