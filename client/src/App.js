@@ -1,12 +1,10 @@
 import { Switch, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import Navbar from "./components/NavBar";
-import About from "./pages/About";
 import Available from "./pages/Available";
 import Cities from "./pages/Cities";
-import Examples from "./pages/Examples";
+import FindHomes from "./pages/FIndHomes";
 import Home from "./pages/Home";
-import Things from "./pages/Things";
 
 function App() {
   return (
@@ -17,6 +15,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/available" component={Available} />
           <Route exact path="/cities" component={Cities} />
+          <Route exact path="/find_homes" component={FindHomes} />
         </Switch>
       </Container>
     </>
