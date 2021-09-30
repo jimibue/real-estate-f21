@@ -117,111 +117,40 @@ const Available = () => {
       console.log(err);
     }
   };
-
-  const loadMore1 = async (nextPage) => {
-    console.log("loadMore called");
-    try {
-      setPage(nextPage);
-      let res = await axios.get(`/api/properties?page=${nextPage}`);
-      let normalizedData = normalizeData(res.data.properties);
-      setAgents(normalizedData);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const renderPaginator = () => {
-    let numsJSX = [];
-    for (let num = 1; num <= totalPages; num++) {
-      numsJSX.push(
-        <span
-          onClick={() => loadMore1(num)}
-          style={
-            num == page
-              ? { ...styles.pageNav, ...styles.active }
-              : styles.pageNav
-          }
-        >
-          {num}
-        </span>
-      );
-    }
-
-    return numsJSX;
-  };
-
-  const renderPaginator1 = () => {
-    let numsJSX = [];
-    let lowerLimit = page > 11 ? page - 10 : 1;
-    let upperLimit = page < totalPages - 10 ? page + 10 : totalPages;
-
-    for (let num = lowerLimit; num <= upperLimit; num++) {
-      numsJSX.push(
-        <span
-          onClick={() => loadMore1(num)}
-          style={
-            num == page
-              ? { ...styles.pageNav, ...styles.active }
-              : styles.pageNav
-          }
-        >
-          {num}
-        </span>
-      );
-    }
-    numsJSX.unshift(
-      <span
-        onClick={() => loadMore1(1)}
-        style={
-          1 == page ? { ...styles.pageNav, ...styles.active } : styles.pageNav
-        }
-      >
-        {`<<`}
-      </span>
-    );
-
-    numsJSX.push(
-      <span
-        onClick={() => loadMore1(totalPages)}
-        style={
-          totalPages == page
-            ? { ...styles.pageNav, ...styles.active }
-            : styles.pageNav
-        }
-      >
-        {`>>`}
-      </span>
-    );
-
-    return numsJSX;
-  };
   return (
     <>
       <p>page: {page}</p>
       <p>total pages: {totalPages}</p>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
-        {renderPaginator1()}
-      </div>
+
       <List
         divided
         verticalAlign="middle"
         style={{
           border: "1px solid",
           padding: "10px ",
+          height: "80vh",
+          overflow: "auto",
         }}
       >
-        {renderList()}
+        {/* <InfiniteScroll
+          pageStart={page}
+          loadMore={loadMore}
+          hasMore={page < totalPages}
+          useWindow={false}
+        >
+          {renderList()}
+        </InfiniteScroll> */}
+
+        <InfiniteScroll
+          dataLength={page * 50}
+          next={loadMore}
+          hasMore={page < totalPages}
+          loader={<h4>Loading...</h4>}
+        >
+          {renderList()}
+        </InfiniteScroll>
       </List>
     </>
   );
-};
-const styles = {
-  pageNav: {
-    marginRight: "2px",
-  },
-  active: {
-    color: "blue",
-    textDecoration: "underline",
-  },
 };
 export default Available;
