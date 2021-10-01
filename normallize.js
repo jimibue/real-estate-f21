@@ -1,83 +1,119 @@
-const dataFromServer = [
+data = [
   {
-    id: "54",
-    price: 819962,
-    beds: 4,
-    baths: 7,
-    sq_ft: 4721,
-    city: "Sandy",
-    zip: "00283",
-    street: "239 Berge Haven",
-    first_name: "Connie",
-    last_name: "Dickinson",
-    email: "miriam@walter.net",
-    agent_id: "11",
-  },
-  {
-    id: "52",
-    price: 662926,
+    id: 101,
     beds: 6,
-    baths: 4,
-    sq_ft: 3232,
-    city: "Draper",
-    zip: "49841",
-    street: "3157 Fay Pine",
-    first_name: "Connie",
-    last_name: "Dickinson",
-    email: "miriam@walter.net",
-    agent_id: "11",
+    baths: 6,
+    sq_ft: 6831,
+    agent_id: 21,
+    price: 420931,
+    email: "dan.ullrich@kessler-wolf.co",
+    first_name: "Zana",
+    last_name: "Rowe",
+    city: "Sandy",
+    zip: "47670",
+    street: "65441 Haley Village",
   },
   {
-    id: "60",
-    price: 1499257,
-    beds: 7,
-    baths: 2,
-    sq_ft: 1845,
-    city: "Draper",
-    zip: "08069",
-    street: "55875 Lauretta Trafficway",
-    first_name: "Stacey",
-    last_name: "Hackett",
-    email: "raymundo@kirlin.io",
-    agent_id: "12",
+    id: 102,
+    beds: 4,
+    baths: 4,
+    sq_ft: 1831,
+    agent_id: 21,
+    price: 40931,
+    email: "dan.ullrich@kessler-wolf.co",
+    first_name: "Zana",
+    last_name: "Rowe",
+    city: "Sandy",
+    zip: "47670",
+    street: "65441 Haley Village",
+  },
+  {
+    id: 102,
+    beds: 4,
+    baths: 4,
+    sq_ft: 1831,
+    agent_id: 21,
+    price: 403931,
+    email: "dan.ullrich@kessler-wolf.co",
+    first_name: "Zana",
+    last_name: "Rowe",
+    city: "SLC",
+    zip: "47670",
+    street: "65441 Haley Village",
+  },
+  {
+    id: 102,
+    beds: 3,
+    baths: 4,
+    sq_ft: 1831,
+    agent_id: 21,
+    price: 430931,
+    email: "dan.ullrich@kessler-wolf.co",
+    first_name: "Zana",
+    last_name: "Rowe",
+    city: "SLC",
+    zip: "47670",
+    street: "65441 Haley Village",
   },
 ];
 
 const normalizeData = (data) => {
-  // console.log(data);
-  let ids = data.map((d) => d.agent_id);
-  /// create a set and then convert a set to an array
-  let unique_ids = [...new Set(ids)];
-  // console.log(ids);
-  // console.log(unique_ids);
+  let citySum = data.reduce((accum, property) => {
+    let index = accum.findIndex((a) => a.name === property.city);
+    if (index === -1) {
+      accum.push({ name: property.city, sum: property.price, count: 1 });
+    } // if in accum updat sum and count
+    else {
+      accum[index].sum += property.price;
+      accum[index].count++;
+    }
+    return accum;
+  }, []);
 
-  return unique_ids.map((id) => {
-    // working with one agent
-
-    // find the agents properties
-    let properties = data.filter((d) => d.agent_id === id);
-    // console.log(id, "has: ");
-    // console.log(properties);
-
-    //get aggent info
-    let { first_name, last_name, email } = properties[0];
-    // cleaning up property data so it only includes property data
-    let agentProperties = properties.map((p) => {
-      return {
-        price: p.price,
-        beds: p.beds,
-        sq_ft: p.sq_ft,
-        city: p.city,
-        street: p.street,
-        zip: p.zip,
-        baths: p.baths,
-        id: p.id,
-      };
-    });
-    // finally return on agent object
-    return { first_name, last_name, email, properties: agentProperties };
+  return citySum.map((d) => {
+    return { name: d.name, average: d.sum / d.count };
   });
 };
 
-data = normalizeData(dataFromServer);
-console.log(data[0].properties);
+let y = normalizeData(data);
+console.log(y);
+
+////
+
+//
+
+//
+
+//
+
+//
+//
+//
+
+//
+
+//
+//
+
+//
+
+///to this... use reduce.. for each or however
+const normalizeData1 = (data) => {
+  return data.reduce((accum, property) => {
+    // findIndex of city name
+    index = accum.findIndex((a) => property.city === a.name);
+    // not in array add it
+    if (index === -1) {
+      accum.push({ name: property.city, sum: property.price, count: 1 });
+    }
+    // is in array update Values
+    else {
+      accum[index].sum += property.price;
+      accum[index].count++;
+    }
+    return accum;
+  }, []);
+};
+
+// let x = normalizeData1(data);
+// console.log(x);
